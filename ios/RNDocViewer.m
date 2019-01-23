@@ -61,9 +61,7 @@ RCT_EXPORT_METHOD(openDoc:(NSArray *)array callback:(RCTResponseSenderBlock)call
         NSData* dat = [NSData dataWithContentsOfURL:url];
         RCTLogInfo(@"Url %@", url);
         RCTLogInfo(@"FileNameOptional %@", fileNameOptional);
-        NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
-        urlComponents.query = nil; // Strip out query parameters.
-        NSArray *parts = [urlComponents.string componentsSeparatedByString:@"/"];
+        NSArray *parts = [urlStr componentsSeparatedByString:@"/"];
         NSArray* fileNameParts = [[parts lastObject] componentsSeparatedByString:@"?"];    // to remove any query string on url
         NSString* fileNameExported = [fileNameParts firstObject];
         NSString* fileExt = [fileNameExported pathExtension];
