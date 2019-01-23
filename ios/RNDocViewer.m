@@ -57,11 +57,13 @@ RCT_EXPORT_METHOD(openDoc:(NSArray *)array callback:(RCTResponseSenderBlock)call
         NSString* urlStr = dict[@"url"];
         NSString* fileNameOptional = dict[@"fileName"];
         NSString* fileType = dict[@"fileType"];
-        NSURL* url = [NSURL URLWithString:[urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSURL* url = [NSURL URLWithString:urlStr];
         NSData* dat = [NSData dataWithContentsOfURL:url];
         RCTLogInfo(@"Url %@", url);
         RCTLogInfo(@"FileNameOptional %@", fileNameOptional);
-        NSArray* parts = [urlStr componentsSeparatedByString:@"/"];
+        NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
+        urlComponents.query = nil; // Strip out query parameters.
+        NSArray *parts = [urlComponents.string componentsSeparatedByString:@"/"];
         NSArray* fileNameParts = [[parts lastObject] componentsSeparatedByString:@"?"];    // to remove any query string on url
         NSString* fileNameExported = [fileNameParts firstObject];
         NSString* fileExt = [fileNameExported pathExtension];
